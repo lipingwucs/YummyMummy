@@ -1,0 +1,12 @@
+﻿@model YummyMummy.Models.Ingredient
+
+@foreach (var info in typeof(Ingredient).GetProperties())
+{
+    @if (info.Name != "RecipeIngredients")
+    {
+    <div class="form-group">
+        <label for="@info.Name"> @info.Name:</label>
+        <label for="@info.Name">@info.GetValue(Model, null)</label>
+    </div>
+    }
+}

@@ -1,0 +1,52 @@
+﻿@model YummyMummy.Models.Recipe
+
+
+<form method="post">
+    @foreach (var info in typeof(Recipe).GetProperties())
+    {
+    <div class="form-group">
+        @if (info.Name == "ID")
+        {
+            <input type="hidden" asp-for="ID" />
+        }
+        else if (info.Name == "RecipeReviews" || info.Name == "RecipeIngredients" || info.Name == "Reviews" || info.Name == "Dict" || info.Name == "Category")
+        {
+
+        }
+        else if (info.Name == "CategoryID")
+        {
+            <label for="@info.Name"> @info.Name:</label>
+            <select asp-for="CategoryID" class="form-control" asp-items="@ViewBag.CategoryID">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="CategoryID" class="text-danger"></span>
+        }
+        else if (info.Name == "Description")
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Description):
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Description, 10, 100, null)
+            </div>
+        }
+        else
+        {
+            <label for="@info.Name"> @info.Name:</label>
+            <input id="@info.Name" name="@info.Name" value="@info.GetValue(Model, null)" class="form-control" />
+            <span asp-validation-for="@info.Name" class="text-danger"></span>
+        }
+
+    </div>
+    }
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="reset" class="btn btn-secondary">Cancel</button>
+    </div>
+</form>
+
+<div>
+    <a asp-action="List">Back to List</a> &nbsp; | &nbsp;
+    <a asp-action="Index" asp-controller="Home">Back to Home</a>
+</div>

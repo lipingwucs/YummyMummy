@@ -1,0 +1,25 @@
+﻿@model YummyMummy.Models.Category
+
+@{
+    ViewBag.Title = @ViewBag.CategoryName;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.CategoryName</title>
+</head>
+<body>
+    <h3>Category Summary</h3>
+    <hr />
+    @Html.Partial("~/Views/Shared/_PartialCategoryDetails.cshtml", Model)
+
+
+    <div>
+        <a asp-action="List">Back to List</a> &nbsp; | &nbsp;
+        <a asp-action="Index" asp-controller="Home">Back to Home</a>
+    </div>
+</body>
+</html>

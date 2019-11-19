@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Category>
+@{
+    ViewBag.Title = "Recipe Category List";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Yummy Mummy's  Recipe Category</title>
+</head>
+<body>
+    <div>
+        <h3> Yummy Mummy's Kitchen Recipe Category</h3>
+        @if (TempData["message"] != null)
+        {
+            <div class="text-center alert-success">@TempData["message"]</div>
+        }
+        <table class="table table-hover">
+            <thead>
+                <tr> <th width="10%">Category ID </th>   <th width="30%">Category Name </th>   <th width="30%"> Action </th></tr>
+            </thead>
+            @foreach (var c in Model)
+            {
+                @Html.Partial("~/Views/Shared/_PartialCategoryList.cshtml", c)
+            }
+        </table>
+        <div class="text-center">
+            <a asp-action="Add">Add New Category</a>
+        </div>
+    </div>
+</body>
+</html>

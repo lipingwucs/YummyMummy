@@ -1,0 +1,17 @@
+﻿@model YummyMummy.Models.Inquiry
+
+<div>
+    <h4>@Model.FirstName  @Model.LastName  </h4>
+    <h4>@Model.Email </h4>
+    <h4>@Model.Telephone </h4>
+    <h4>@Model.Message </h4>
+    <a asp-action="Update" asp-route-id="@Model.ID">Update</a> |
+    <a asp-action="Details" asp-route-id="@Model.ID"> Details </a> |
+    <a asp-action="Delete" asp-route-id="@Model.ID"> Delete </a>
+</div>
+
+   
+       
+   
+
+

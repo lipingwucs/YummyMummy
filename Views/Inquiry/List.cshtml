@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Inquiry>
+
+@{
+    ViewBag.Title = "Inquiry List";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Inquiry List</title>
+</head>
+<body>
+    <h1> Yummy Mummy Kitchen's Inquirys</h1>
+    <div>     
+            @foreach (var r in Model)
+            {<div>
+            @Html.Partial("~/Views/Shared/_PartialInquiryList.cshtml", r)
+            </div>
+            }
+
+        
+        <div class="text-center">
+            <button type="button" class="btn btn-warning">@Html.ActionLink("Add a New Inquiry", "Add", "Inquiry")</button>
+        </div>
+    </div>
+</body>
+</html>

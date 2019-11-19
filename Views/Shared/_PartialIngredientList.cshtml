@@ -1,0 +1,11 @@
+﻿@model YummyMummy.Models.Ingredient
+
+<tr>
+    <td width="20%">@Model.ID</td>
+    <th width="30%" scope="row">@Model.Name</th>  
+    <td width="30%">
+        <a asp-action="Update" asp-route-id="@Model.ID">Update</a> |
+        <a asp-action="Details" asp-route-id="@Model.ID"> Details </a> |
+        <a asp-action="Delete" asp-route-id="@Model.ID"> Delete </a>
+    </td>
+</tr>

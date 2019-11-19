@@ -1,0 +1,25 @@
+﻿@model YummyMummy.Models.Ingredient
+
+@{
+    ViewBag.Title = @ViewBag.IngredientName;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.IngredientName</title>
+</head>
+<body>
+    <h3>Ingredient Summary</h3>
+    <hr />
+    @Html.Partial("~/Views/Shared/_PartialIngredientDetails.cshtml", Model)
+
+
+    <div>
+        <a asp-action="List">Back to List</a> &nbsp; | &nbsp;
+        <a asp-action="Index" asp-controller="Home">Back to Home</a>
+    </div>
+</body>
+</html>

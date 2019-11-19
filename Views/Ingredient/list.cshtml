@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Ingredient>
+@{
+    ViewBag.Title = "Recipe Ingredient List";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Yummy Mummy's  Recipe Ingredient</title>
+</head>
+<body>
+    <div>
+        <h3> Yummy Mummy's Kitchen Recipe Ingredient</h3>
+        @if (TempData["message"] != null)
+        {
+            <div class="text-center alert-success">@TempData["message"]</div>
+        }
+            <form asp-action="List" method="post">
+                <p>
+                    Search: <input type="text" name="SearchString">
+                    <input type="submit" value="Filter" />
+                </p>
+            </form>
+        <table class="table table-hover">
+            <thead>
+                <tr> <th width="10%">Ingredient ID </th>   <th width="30%">Ingredient Name </th>   <th width="30%"> Action </th></tr>
+            </thead>
+            @foreach (var c in Model)
+            {
+                @Html.Partial("~/Views/Shared/_PartialIngredientList.cshtml", c)
+            }
+        </table>
+        <div class="text-center">
+            <a asp-action="Add">Add New Ingredient</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿@model YummyMummy.Models.Category
+
+@foreach (var info in typeof(Category).GetProperties())
+{
+<div class="form-group">
+    <label for="@info.Name"> @info.Name:</label>
+    <label for="@info.Name">@info.GetValue(Model, null)</label>
+</div>
+
+}

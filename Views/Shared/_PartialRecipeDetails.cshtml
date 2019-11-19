@@ -1,0 +1,78 @@
+﻿@model YummyMummy.Models.Recipe
+
+<div>
+    @if (@ViewBag.errorMessage != null)
+    {
+        <div class="btn-danger">@ViewBag.errorMessage</div>
+    }
+    else
+    {
+        @foreach (var info in typeof(Recipe).GetProperties())
+        {
+        <div class="form-group">
+            @if (info.Name == "Category")
+            {
+                <label for="Category">Category:</label>
+                <label for="Category"><a asp-controller="Category" asp-action="Details" asp-route-id="@Model.Category.ID">@Model.Category.Name</a></label>
+            }
+            else if (info.Name == "Description")
+            {
+                <label for="Description" Style="vertical-align: top;">Description:</label>
+                <label for="Description">
+                    @Html.Raw(Model.Description.Replace(Environment.NewLine, "<br>"))
+                </label>
+            }
+            else if (info.Name != "RecipeReviews" && info.Name != "Dict" && info.Name != "ID" && info.Name != "RecipeIngredients" && info.Name != "CategoryID" && info.Name != "Reviews")
+            {
+                <label for="@info.Name">@info.Name:</label>
+                <label for="@info.Name">@info.GetValue(Model, null)</label>
+            }
+        </div>
+        }
+        <hr />
+        <div class="container-fluid">
+            <h4>The Ingredients of current Recipe [@Model.Name]: <a asp-action="AddIngredient" asp-controller="Recipe" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Add more ingredient</a></h4>
+            <table class="table table-hover">
+                <tr><th>Ingredients</th><th>Amount</th><th>Unit</th><th>Action</th></tr>
+                @foreach (var p in Model.RecipeIngredients)
+                {
+                    <tr>
+                        <td><a asp-action="Details" asp-controller="Ingredient" class="btn btn-sm" asp-route-id="@p.Ingredient.ID"> @p.Ingredient.Name</a></td>
+                        <td>@p.Amount</td>
+                        <td>@p.Unit</td>
+                        <td>
+                            <a asp-action="UpdateIngredient" asp-controller="Recipe" class="btn btn-sm btn-warning" asp-route-id="@p.ID">Update</a> |
+                            <a asp-action="DeleteIngredient" asp-controller="Recipe" class="btn btn-danger btn-sm" asp-route-id="@p.ID"> Delete </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <hr />
+        <div class="container-fluid">
+            <h4>The Reviews of current Recipe [@Model.Name]: <a asp-action="AddReview" asp-controller="Recipe" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Add your review on this recipe</a></h4>
+            <table class="table table-hover">
+                @foreach (var p in Model.RecipeReviews)
+                {
+                    <tr>
+                        <td>
+                            <div>
+                                <h5>
+                                    @p.FirstName  @p.LastName  - Email: @p.Email Tel: @p.Telephone &nbsp;<a asp-action="UpdateReview" asp-controller="Recipe" class="btn btn-sm btn-warning" asp-route-id="@p.ID">Update</a> |
+                                    <a asp-action="DeleteReview" asp-controller="Recipe" class="btn btn-danger btn-sm" asp-route-id="@p.ID"> Delete </a>
+                                </h5>
+                                <div style="min-height:50px;overflow:auto;">
+                                    @Html.Raw(p.Message.Replace(Environment.NewLine, "<br>"))
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+</div>
+<div>
+    <a asp-action="List">Back to List</a>
+</div>

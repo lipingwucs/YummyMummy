@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Recipe>
+
+@{
+    ViewBag.Title = "Recipe List";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Recipe List</title>
+</head>
+<body>
+    <h1> Yummy Mummy Kitchen's Recipes</h1>
+    @if (TempData["message"] != null)
+    {
+        <div class="text-center alert-success">@TempData["message"]</div>
+    }
+    <div>
+        <table class="table table-condensed table-bordered table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th width="10%">Recipe ID </th>
+                    <th width="10%">Category </th>
+                    <th width="20%">Recipe Name </th>
+                    <th width="10%">Cooking Time(min) </th>
+                    <th width="10%">Cost (cad) </th>
+                    <th width="40%">Action </th>
+                </tr>
+            </thead>
+            @foreach (var r in Model)
+            {
+                @Html.Partial("~/Views/Shared/_PartialRecipeList.cshtml", r)
+            }
+
+        </table>
+        <div class="text-center">
+            <a asp-action="Add">Add New Recipe</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿@model YummyMummy.Models.Inquiry
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Yummy Mummy's Kitchen</title>
+ 
+</head>
+<body class="p-2">
+    <h3 class="text-center">Edit Inquiry </h3>
+    <form method="post">
+
+        <div class="form-group">
+            <label for="ID">Inquiry ID:</label>
+            <input id="ID" name="ID" value="@Model.ID" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label for="FirstName">First Name:</label>
+            <input id="FirstName" name="FirstName" value="@Model.FirstName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="LastName">Last Name:</label>
+            <input id="LastName" name="LastName" value="@Model.LastName" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <input id="Email" name="Email" value="@Model.Email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Telephone">Telephone:</label>
+            <input id="Telephone" name="Telephone" value="@Model.Telephone" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Message">Message:</label>
+            <input id="Message" name="Message" value="@Model.Message" class="form-control" />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="reset" class="btn btn-secondary">Cancel</button>
+        </div>
+    </form>
+
+</body>
+    </html>

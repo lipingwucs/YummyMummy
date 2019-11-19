@@ -1,0 +1,20 @@
+﻿@model YummyMummy.Models.Inquiry
+
+@{
+    ViewBag.Title = @ViewBag.InquiryID;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.InquiryID</title>
+</head>
+<body>
+    <h3>Inquiry Summary</h3>
+    <hr />
+    @Html.Partial("~/Views/Shared/_PartialDetails.cshtml",  new Dictionary<string, string>[] { Model.Dict, ViewBag.Details })
+    
+</body>
+</html>
