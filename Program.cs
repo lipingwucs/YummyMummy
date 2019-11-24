@@ -24,7 +24,7 @@ namespace YummyMummy
 				var services = scope.ServiceProvider;
 				try
 				{
-					var context = services.GetRequiredService<RecipeDbContext>();
+					var context = services.GetRequiredService<AppIdentityDbContext>();
 					var userManager = services.GetRequiredService<UserManager<AppUser>>();
 					var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 					// insertt inital data for app identity

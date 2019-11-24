@@ -8,7 +8,7 @@ namespace YummyMummy.Data
 {
 	public class DbInitializer
 	{
-		public static async Task Initialize(RecipeDbContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+		public static async Task Initialize(AppIdentityDbContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			context.Database.EnsureCreated();
 

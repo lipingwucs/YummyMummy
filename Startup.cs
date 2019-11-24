@@ -28,28 +28,29 @@ namespace YummyMummy
 		{
 			services.AddDbContext<RecipeDbContext>(options =>
 			{
-				options.UseSqlServer(Configuration["Data:YummyMummy:ConnectionString"]);
+				options.UseSqlServer(Configuration["Data:ConnectionStrings:RecipeDbContext"]);
 			});
 			services.AddTransient<IRecipeRepository,EFRecipeRepository>();
 			//services.AddTransient<IRecipeRepository,FakeRecipeRepository>();
 
+			/***one database contain domain data and app indentity ***
+			services.AddIdentity<AppUser, IdentityRole>()
+				.AddEntityFrameworkStores<RecipeDbContext>()
+				.AddDefaultTokenProviders();
+			*/
+			// split domain data aand app indentity into two database
+			services.AddDbContext<AppIdentityDbContext>(options =>
+			{
+				options.UseSqlServer(Configuration["Data:ConnectionStrings:AppIdentityDbContext"]);
+			});
+			services.AddIdentity<AppUser, IdentityRole>()
+				.AddEntityFrameworkStores<AppIdentityDbContext>()
+				.AddDefaultTokenProviders();
+			// Add google login
 			services.AddAuthentication().AddGoogle(opts => {
 				opts.ClientId = "<enter client id here>";
 				opts.ClientSecret = "<enter client secret here>";
 			});
-
-			services.AddIdentity<AppUser, IdentityRole>()
-				.AddEntityFrameworkStores<RecipeDbContext>()
-				.AddDefaultTokenProviders();
-			/*
-			services.AddDbContext<RecipeDbContext>(options =>
-			{
-				options.UseSqlServer(Configuration["Data:YummyMummy:RecipeDbContext"]);
-			});
-			services.AddIdentity<AppUser, IdentityRole>()
-				.AddEntityFrameworkStores<RecipeDbContext>()
-				.AddDefaultTokenProviders();
-				*/
 
 			services.Configure<IdentityOptions>(options =>
 			{

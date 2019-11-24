@@ -16,12 +16,12 @@ namespace YummyMummy.Controllers
 	[Authorize(Roles = "Admin")]
 	public class UserAdminController : Controller
 	{
-		private readonly RecipeDbContext _context;
+		private readonly AppIdentityDbContext _context;
 		private readonly UserManager<AppUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
 
 		public UserAdminController(
-		RecipeDbContext context,
+		AppIdentityDbContext context,
 		UserManager<AppUser> userManager,
 		RoleManager<IdentityRole> roleManager
 		)
