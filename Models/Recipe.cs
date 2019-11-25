@@ -14,6 +14,10 @@ namespace YummyMummy.Models
 	{
 		public int ID { get; set; }
 
+		public string UserName { get; set; }
+		public DateTime Created { get; set; }
+		public DateTime Updated { get; set; }
+
 		[Required]
 		public int CategoryID { get; set; }
 		public Category Category { get; set; }

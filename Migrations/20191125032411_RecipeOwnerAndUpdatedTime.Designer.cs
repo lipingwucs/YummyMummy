@@ -11,9 +11,10 @@ using YummyMummy.Data;
 namespace YummyMummy.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    partial class RecipeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191125032411_RecipeOwnerAndUpdatedTime")]
+    partial class RecipeOwnerAndUpdatedTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

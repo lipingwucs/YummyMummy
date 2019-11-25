@@ -62,6 +62,7 @@ namespace YummyMummy.Controllers
 			if (ModelState.IsValid)
 			{
 				formdata.ID = 0;
+				formdata.UserName = User.Identity.Name;
 				repository.SaveRecipe(formdata);
 				TempData["message"] = "You have added a new Recipe [" + formdata.Name + "] Successfully! ";
 				return RedirectToAction("List");
