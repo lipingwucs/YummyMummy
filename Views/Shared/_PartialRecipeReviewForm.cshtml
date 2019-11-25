@@ -12,7 +12,11 @@
         else if (info.Name == "Recipe")
         {
             <label for="@info.Name">@info.Name:</label>
-            <label for="@info.Name"><a asp-controller="Recipe" asp-action="Details" asp-route-id="@Model.Recipe.ID">@Model.Recipe.Name</a></label>
+            <label for="@info.Name"><a asp-controller="Recipe" asp-action="Details" 
+                    asp-route-id="@Model.Recipe.ID">@Model.Recipe.Name</a></label>
+        }
+        else if (info.Name == "Created" || info.Name == "Updated")
+        {
         }
         else if (info.Name == "RecipeID")
         {

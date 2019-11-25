@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Linq;
 using YummyMummy.Models;
 
 
@@ -77,7 +79,28 @@ namespace YummyMummy.Data
 		{
 			optionsBuilder.UseSqlServer(@"Server=(LocalDB)\MSSQLLocalDB;Database=YummyMummy;Trusted_Connection=True;MultipleActiveResultSets=true");
 		}
-	
+
+		public override int SaveChanges()
+		{
+			var entries = ChangeTracker
+				.Entries()
+				.Where(e => e.Entity is BaseEntity && (
+						e.State == EntityState.Added
+						|| e.State == EntityState.Modified));
+
+			foreach (var entityEntry in entries)
+			{
+				((BaseEntity)entityEntry.Entity).Updated = DateTime.Now;
+
+				if (entityEntry.State == EntityState.Added)
+				{
+					((BaseEntity)entityEntry.Entity).Created = DateTime.Now;
+				}
+			}
+
+			return base.SaveChanges();
+		}
+
 
 	}
 

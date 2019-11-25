@@ -7,7 +7,11 @@
     <div class="form-group">
         @if (info.Name == "ID")
         {
-            <input type="hidden" asp-for="ID" />
+            <input type="hidden" asp-for="ID" />        
+        }
+        else if (info.Name == "Created" ||
+                 info.Name == "Updated" )
+        {
         }
         else
         {

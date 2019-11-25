@@ -8,11 +8,10 @@
             {
                 <input type="hidden" asp-for="ID" />
             }
-            else if (info.Name == "RecipeIngredients")
+            else if (info.Name == "RecipeIngredients"|| info.Name == "Created" ||  info.Name == "Updated") 
             {
-
             }
-            else
+            else 
             {
                 <label for="@info.Name"> @info.Name:</label>
                 <input id="@info.Name" name="@info.Name" value="@info.GetValue(Model, null)" class="form-control" />

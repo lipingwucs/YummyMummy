@@ -18,7 +18,8 @@
         {
             <input type="hidden" asp-for="RecipeID" />
         }
-        else if (info.Name == "Ingredient")
+        else if (info.Name == "Ingredient"|| info.Name == "Created" ||
+                 info.Name == "Updated" )
         {
         }
         else if (info.Name == "IngredientID")

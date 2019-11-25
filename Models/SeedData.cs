@@ -104,7 +104,8 @@ namespace YummyMummy.Models
 						Name = "Egg Fried Rice",
 						Description = "Rice, Egg, Green Onion,Oil",
 						CookingTime = 30,
-						Cost = 5.00
+						Cost = 5.00,
+						UserName="Liping"
 					},
 					//2
 					new Recipe
@@ -113,7 +114,8 @@ namespace YummyMummy.Models
 						Name = "Meat Fried Rice ",
 						Description = "Rice, Meat, Green Onion,Oil",
 						CookingTime = 40,
-						Cost = 2.00
+						Cost = 2.00,
+						UserName = "Liping"
 					},
 					//3
 					new Recipe
@@ -122,7 +124,8 @@ namespace YummyMummy.Models
 						Name = "Seafood Rice Noodle",
 						Description = "Rice Noodle, Seafood, Vegetable, Green Onion,Oil",
 						CookingTime = 10,
-						Cost = 10.00
+						Cost = 10.00,
+						UserName = "Liping"
 					},
 					//4
 					new Recipe
@@ -131,7 +134,8 @@ namespace YummyMummy.Models
 						Name = "Stir Fried Season Vegetable",
 						Description = "Season Vegetable like lettuce, brocolli, Napa etc",
 						CookingTime = 10,
-						Cost = 5.00
+						Cost = 5.00,
+						UserName = "Liping"
 					},
 					//5
 					new Recipe
@@ -140,7 +144,8 @@ namespace YummyMummy.Models
 						Name = "Deep Fried Chicken",
 						Description = "Deep Fried Chicken Breast Meat",
 						CookingTime = 10,
-						Cost = 5.00
+						Cost = 5.00,
+						UserName = "Liping"
 					},
 					//6
 					new Recipe
@@ -149,7 +154,8 @@ namespace YummyMummy.Models
 						Name = "Seasoned Stun Beef",
 						Description = "Beef, Salt, Dark Soysauce, Ginger, Pepper",
 						CookingTime = 60,
-						Cost = 20.00
+						Cost = 20.00,
+						UserName = "Liping"
 					},
 					//7
 					new Recipe
@@ -158,7 +164,8 @@ namespace YummyMummy.Models
 						Name = "Pork Stir fry with hot pepper",
 						Description = "Pork, Green hot pepper, Dark Soysauce, Ginger",
 						CookingTime = 60,
-						Cost = 20.00
+						Cost = 20.00,
+						UserName = "Liping"
 					},
 					//8
 					new Recipe
@@ -167,7 +174,8 @@ namespace YummyMummy.Models
 						Name = "Steamed Crab",
 						Description = "Steam Live Crab, dipped with Light Soysauce, Ginger ",
 						CookingTime = 40,
-						Cost = 20.00
+						Cost = 20.00,
+						UserName = "Liping"
 					},
 					//9
 					new Recipe
@@ -176,7 +184,8 @@ namespace YummyMummy.Models
 						Name = "Chicken Soup",
 						Description = "Chicken, mushroom, red dates, ginger, salt",
 						CookingTime = 60,
-						Cost = 20.00
+						Cost = 20.00,
+						UserName = "Liping"
 					},
 					//10
 					new Recipe
@@ -185,7 +194,8 @@ namespace YummyMummy.Models
 						Name = "Home-made blueberry Yogurt",
 						Description = "Milk, Yogurt Starter, Sugar, Blueberry",
 						CookingTime = 360,
-						Cost = 5
+						UserName = "Liping",
+						Cost = 5,
 					}
 					);
 					context.SaveChanges();

@@ -10,13 +10,11 @@ namespace YummyMummy.Models
 {
 	//ERD, one entity, one class
 	//Recipe
-	public class Recipe
+	public class Recipe : BaseEntity
 	{
 		public int ID { get; set; }
 
 		public string UserName { get; set; }
-		public DateTime Created { get; set; }
-		public DateTime Updated { get; set; }
 
 		[Required]
 		public int CategoryID { get; set; }

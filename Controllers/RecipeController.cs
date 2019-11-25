@@ -81,9 +81,14 @@ namespace YummyMummy.Controllers
 		}
 
 		//GET edit /Recipe/Update/{ID}
-		public ViewResult Update(int ID)
+		public ActionResult Update(int ID)
 		{
 			Recipe found = repository.GetRecipe(ID);
+			if (!User.IsInRole("Admin")  && User.Identity.Name!=found.UserName)
+			{
+				TempData["message"] = "!!!You are not the owner, you can't Edit/Updated the Recipe!";
+				return RedirectToAction(nameof(Details), new { id = found.ID });
+			}
 			ViewBag.Message = "Edit Recipe";
 			this.PopulateCategoryDropDownList(found.CategoryID);
 			return View(found);

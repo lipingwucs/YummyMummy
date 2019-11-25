@@ -10,7 +10,7 @@ namespace YummyMummy.Models
 {
 	
 
-	public class RecipeReview
+	public class RecipeReview : BaseEntity
 	{
 		[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] //this line
 		public int ID { get; set; }

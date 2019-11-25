@@ -6,6 +6,8 @@
     <td><a asp-action="Details" asp-route-id="@Model.ID">@Model.Name</a></td>
     <td>@Model.CookingTime</td>
     <td>@Model.Cost.ToString("c")</td>
+    <td>@Model.UserName </td>
+    <td>@Model.Updated</td>
     <td>
         <a asp-action="Update" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Update</a> |
         <a asp-action="Details" class="btn btn-sm btn-warning" asp-route-id="@Model.ID"> Details </a> |
@@ -13,5 +15,5 @@
         <a asp-action="AddIngredient" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Add Ingredient</a> |
         <a asp-action="AddReview" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Add Review</a>
     </td>
-    
+
 </tr>

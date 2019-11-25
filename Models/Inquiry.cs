@@ -8,7 +8,7 @@ namespace YummyMummy.Models
 {
 	//ERD, one entity, one class
 	//Review Class
-	public class Inquiry
+	public class Inquiry : BaseEntity
 	{
 		public int ID { get; set; }
 		public string FirstName { get; set; }
