@@ -232,6 +232,10 @@ namespace YummyMummy.Controllers
 
 					await _signInManager.SignInAsync(user, isPersistent: false);
 					_logger.LogInformation("User created a new account with password.");
+
+					// Add default User role to each new register user account
+					await _userManager.AddToRoleAsync(user, "User");
+
 					return RedirectToLocal(returnUrl);
 				}
 				AddErrors(result);

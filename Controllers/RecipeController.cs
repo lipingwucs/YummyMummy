@@ -23,10 +23,15 @@ namespace YummyMummy.Controllers
 
 		[AllowAnonymous]
 		public ViewResult List(int recipePage = 1) {
-			var list = repository.Recipes
-			.OrderBy(r => r.ID)
-			.Skip((recipePage - 1) * PageSize)
-			.Take(PageSize);
+			var list = repository.Recipes;
+			if (User.Identity.IsAuthenticated && User.IsInRole("User")) {
+				list = list.Where(r => r.UserName == User.Identity.Name);
+			}
+			list = list.OrderBy(r => r.ID)
+					.Skip((recipePage - 1) * PageSize)
+					.Take(PageSize);
+
+
 			foreach (var p in list) {
 				p.Category = repository.GetCategory(p.CategoryID);
 			}
@@ -87,7 +92,7 @@ namespace YummyMummy.Controllers
 			Recipe found = repository.GetRecipe(ID);
 			if (!User.IsInRole("Admin")  && User.Identity.Name!=found.UserName)
 			{
-				TempData["message"] = "!!!You are not the owner, you can't Edit/Updated the Recipe!";
+				TempData["message"] = "!!!You are not the owner, you can't Update the Recipe!";
 				return RedirectToAction(nameof(Details), new { id = found.ID });
 			}
 			ViewBag.Message = "Edit Recipe";
@@ -101,6 +106,11 @@ namespace YummyMummy.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				if (!User.IsInRole("Admin") && User.Identity.Name != formdata.UserName)
+				{
+					TempData["message"] = "!!!You are not the owner, you can't Update the Recipe!";
+					return RedirectToAction(nameof(Details), new { id = formdata.ID });
+				}
 				repository.SaveRecipe(formdata);
 				TempData["message"] = "You have Updated the Recipe [" + formdata.Name + "] information Successfully! ";
 				return RedirectToAction("List");
@@ -115,9 +125,14 @@ namespace YummyMummy.Controllers
 
 		//GET delete /Recipe/Delete/{ID} confirm page
 		[HttpGet]
-		public ViewResult Delete(int ID)
+		public ActionResult Delete(int ID)
 		{
 			Recipe found = repository.GetRecipe(ID);
+			if (!User.IsInRole("Admin") && User.Identity.Name != found.UserName)
+			{
+				TempData["message"] = "!!!You are not the owner, you can't Delete the Recipe!";
+				return RedirectToAction(nameof(Details), new { id = found.ID });
+			}
 			ViewBag.Message = "Are you sure want to delete the recipe [" + found.Name + "]  ?";
 			return View(found);
 		}
