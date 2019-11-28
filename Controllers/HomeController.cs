@@ -12,21 +12,17 @@ namespace YummyMummy.Controllers
 			ViewBag.Message = "Yummy Mummy's Kitchen ";
 			return View();
 		}
-
 		
 		public ActionResult About()
 		{
 			ViewBag.Message = " About us";
-
 			return View();
 		}
 
 		public ActionResult Reviews()
 		{
 			ViewBag.Message = "Welcome to Review our recipes";
-
 			return View();
-		}
-		
+		}		
 	}
 }

@@ -83,7 +83,6 @@ namespace YummyMummy.Controllers
 				ViewBag.Details.Add("Email", found.Email);
 				ViewBag.Details.Add("Message", found.Message);				
 			}
-
 			return View(found);
 		}
 
@@ -107,6 +106,5 @@ namespace YummyMummy.Controllers
 				return View(inquiry);
 			}
 		}
-
 	}
 }

@@ -24,6 +24,4 @@ namespace YummyMummy.Models
 		public string Unit { get; set; }
 		public int Amount { get; set; }
 	}
-
-
 }

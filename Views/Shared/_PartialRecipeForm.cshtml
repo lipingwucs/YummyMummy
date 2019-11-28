@@ -12,13 +12,17 @@
         else if (info.Name == "RecipeReviews" ||
                  info.Name == "RecipeIngredients" ||
                  info.Name == "Reviews" ||
-                 info.Name == "UserName" ||
                  info.Name == "Created" ||
                  info.Name == "Updated" ||
                  info.Name == "Dict" ||
                  info.Name == "Category")
         {
-
+        }
+        else if (info.Name == "UserName")
+        {
+            <label for="@info.Name"> Author:</label>
+            <input id="@info.Name" name="@info.Name" value="@info.GetValue(Model, null)" class="form-control" readonly/>
+            <span asp-validation-for="@info.Name" class="text-danger"></span>
         }
         else if (info.Name == "CategoryID")
         {

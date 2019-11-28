@@ -12,14 +12,11 @@ namespace YummyMummy.Controllers
 	[Authorize(Roles = "Admin")]
 	public class CategoryController : Controller
     {
-
 		private IRecipeRepository repository;
-
 		//constructor
 		public CategoryController(IRecipeRepository repo)
 		{
-			repository = repo;
-		
+			repository = repo;		
 		}
 
 		// GET: /Category/
@@ -123,7 +120,6 @@ namespace YummyMummy.Controllers
 			}
 			ViewBag.Message = "Category Summary";
 			return View(found);
-		}
-			
+		}			
     }
 }

@@ -15,6 +15,12 @@
                 <label for="Category">Category:</label>
                 <label for="Category"><a asp-controller="Category" asp-action="Details" asp-route-id="@Model.Category.ID">@Model.Category.Name</a></label>
             }
+            else if (info.Name == "UserName")
+            {
+                <label for="@info.Name"> Author:</label>
+                <label for="@info.Name"> @info.GetValue(Model, null)   </label>
+                
+            }
             else if (info.Name == "Description")
             {
                 <label for="Description" Style="vertical-align: top;">Description:</label>
@@ -22,6 +28,7 @@
                     @Html.Raw(Model.Description.Replace(Environment.NewLine, "<br>"))
                 </label>
             }
+
             else if (info.Name != "RecipeReviews" && info.Name != "Dict" && info.Name != "ID" && info.Name != "RecipeIngredients" && info.Name != "CategoryID" && info.Name != "Reviews")
             {
                 <label for="@info.Name">@info.Name:</label>

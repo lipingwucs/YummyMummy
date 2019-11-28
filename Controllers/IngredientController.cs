@@ -14,11 +14,9 @@ namespace YummyMummy.Controllers
 	public class IngredientController : Controller
 	{
 		private IRecipeRepository repository;
-
 		public IngredientController(IRecipeRepository repo)
 		{
 			repository = repo;
-
 		}
 
 		// GET: /Ingredient/
@@ -71,9 +69,8 @@ namespace YummyMummy.Controllers
 				TempData["message"] = "You have added a new Ingredient [" + formdata.Name + "] Successfully! ";
 				return RedirectToAction("List");
 			}
-			else
-			{
-				//if there is something wrong with the data values
+			else //if there is something wrong with the data values
+			{				
 				return View(formdata);
 			}
 		}
@@ -97,9 +94,8 @@ namespace YummyMummy.Controllers
 				TempData["message"] = "You have Updated the Ingredient's name to [" + formdata.Name + "] Successfully! ";
 				return RedirectToAction("List");
 			}
-			else
-			{
-				//if there is something wrong with the data values
+			else //if there is something wrong with the data values
+			{				
 				return View(formdata);
 			}
 		}
@@ -142,6 +138,5 @@ namespace YummyMummy.Controllers
 			ViewBag.Message = "Ingredient Summary";
 			return View(found);
 		}
-
 	}
 }

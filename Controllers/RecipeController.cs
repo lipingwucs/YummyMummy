@@ -16,7 +16,6 @@ namespace YummyMummy.Controllers
     {
 		private IRecipeRepository repository;
 		public int PageSize = 100;		
-
 		public RecipeController(IRecipeRepository repo)
 		{
 			repository = repo;
@@ -52,7 +51,9 @@ namespace YummyMummy.Controllers
 		{
 			ViewBag.Message = "Add a new recipe to Yummy Mummy's Kitchen ";
 			this.PopulateCategoryDropDownList(0);
-			return View(new Recipe());
+			Recipe formdata = new Recipe();
+			formdata.UserName = User.Identity.Name;
+			return View(formdata);
 		}
 
 		//POST /Recipe/Add
@@ -232,9 +233,7 @@ namespace YummyMummy.Controllers
 			//if there is something wrong with the data values
 			formdata.Recipe = repository.GetRecipe(formdata.RecipeID);
 			this.PopulateIngredientsDropDownList(formdata.IngredientID);
-			return View(formdata);
-
-			
+			return View(formdata); 			
 		}
 
 		//Get: Delete Ingredient from Recipe page /Recipe/DeleteIngredient/{RecipeIngredientID}
@@ -257,7 +256,6 @@ namespace YummyMummy.Controllers
 			// ViewBag.Message = "Ingredient [" + found.Ingredient.Name + "] has been removed from recipe [" + found.Recipe.Name + "].";
 			// return View("actionResult");
 		}
-
 
 		//Get: Add Review to Recipe page /Recipe/AddReview/{RecipeID}
 		public ViewResult AddReview(int ID)
@@ -324,7 +322,6 @@ namespace YummyMummy.Controllers
 			RecipeReview found = repository.GetRecipeReview(ID);
 			ViewBag.Message = "Are you sure want to remove the review of [" + found.Email + "] from recipe [" + found.Recipe.Name + "] ?";
 			return View(found);
-
 		}
 
 		//POST: Delete Review from Recipe page /Recipe/DeleteReview/{RecipeReviewID}
@@ -335,6 +332,5 @@ namespace YummyMummy.Controllers
 			TempData["message"] = "The Review of [" + found.Email + "] has been removed from recipe [" + found.Recipe.Name + "].";
 			return RedirectToAction(nameof(Details), new { id = found.RecipeID });
 		}
-
 	}
 }
