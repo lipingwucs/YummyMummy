@@ -18,7 +18,7 @@ namespace YummyMummy.Models
 			this.context = ctx;
 		}
 
-		public IEnumerable<Recipe> Recipes => context.Recipes;		
+		public DbSet<Recipe> Recipes => context.Recipes;		
 		
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		[DefaultValue("newid()")]

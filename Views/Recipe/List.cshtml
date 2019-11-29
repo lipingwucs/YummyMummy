@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Recipe>
+﻿@model YummyMummy.Infrastructure.PaginatedList<Recipe>
 
 @{
     ViewBag.Title = "Recipe List";
@@ -13,33 +13,66 @@
 </head>
 <body>
     <h1> Yummy Mummy Kitchen's Recipes</h1>
-    @if (TempData["message"] != null)
-    {
-        <div class="text-center alert-success">@TempData["message"]</div>
-    }
-    <div>
-        <table class="table table-condensed table-bordered table-striped">
-            <thead class="thead-light">
-                <tr>
-                    <th width="5%">Recipe ID </th>
-                    <th width="5%">Category </th>
-                    <th width="15%">Recipe Name </th>
-                    <th width="5%">Cooking Time(min) </th>
-                    <th width="5%">Cost (cad) </th>
-                    <th width="7%">Author</th>
-                    <th width="10%">Last Updated </th>
-                    <th width="40%">Action </th>
-                </tr>
-            </thead>
-            @foreach (var r in Model)
-            {
-                @Html.Partial("~/Views/Shared/_PartialRecipeList.cshtml", r)
-            }
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
 
-        </table>
-        <div class="text-center">
-            <a asp-action="Add">Add New Recipe</a>
+    <form asp-action="List" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> |
+                <a asp-action="List">Back to Full List</a>
+            </p>
         </div>
-    </div>
+    </form>
+
+        @if (TempData["message"] != null)
+        {
+            <div class="text-center alert-success">@TempData["message"]</div>
+        }
+            <div>
+                <table class="table table-condensed table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th width="25%"><a asp-action="List" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Name</a></th>
+                            <th width="5%"><a asp-action="List" asp-route-sortOrder="@ViewData["CategorySortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Category</a></th>
+                            <th width="5%"><a asp-action="List" asp-route-sortOrder="@ViewData["CookingtimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Cooking Time(min)</a></th>
+                            <th width="5%"><a asp-action="List" asp-route-sortOrder="@ViewData["CostSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Cost (cad)</a></th>
+                            <th width="10%"><a asp-action="List" asp-route-sortOrder="@ViewData["AuthorSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Author</a></th>
+                            <th width="10%"><a asp-action="List" asp-route-sortOrder="@ViewData["UpdatedSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Last Updated</a></th>
+                            <th width="40%">Action </th>
+                        </tr>
+                    </thead>
+                    @foreach (var r in Model)
+                    {
+                        @Html.Partial("~/Views/Shared/_PartialRecipeList.cshtml", r)
+                    }
+
+                </table>
+
+                @{
+                    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+
+                <a asp-action="List"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+                <a asp-action="List"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
+                <div class="text-center">
+                    <a asp-action="Add">Add New Recipe</a>
+                </div>
+            </div>
 </body>
 </html>

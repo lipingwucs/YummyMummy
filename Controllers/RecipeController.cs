@@ -5,8 +5,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YummyMummy.Models;
 using YummyMummy.Models.ViewModels;
+using YummyMummy.Infrastructure;
 
 
 namespace YummyMummy.Controllers
@@ -15,26 +17,87 @@ namespace YummyMummy.Controllers
 	public class RecipeController : Controller
     {
 		private IRecipeRepository repository;
-		public int PageSize = 100;		
+		public int PageSize = 4;		
 		public RecipeController(IRecipeRepository repo)
 		{
 			repository = repo;
 		}
 
 		[AllowAnonymous]
-		public ViewResult List(int recipePage = 1) {
-			var list = repository.Recipes;
-			if (User.Identity.IsAuthenticated && User.IsInRole("User")) {
+		public async Task<IActionResult> List(string sortOrder,
+			string currentFilter,
+			string searchString,
+			int? pageNumber)
+		{
+			ViewData["CurrentSort"] = sortOrder;
+			ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+			ViewData["UpdatedSortParm"] = sortOrder == "date" ? "date_desc" : "date";
+			ViewData["CategorySortParm"] = sortOrder == "category" ? "category_desc" : "category";
+			ViewData["CookingtimeSortParm"] = sortOrder == "cookingtime" ? "cookingtime_desc" : "cookingtime";
+			ViewData["CostSortParm"] = sortOrder == "cost" ? "cost_desc" : "cost";
+			ViewData["AuthorSortParm"] = sortOrder == "username" ? "username_desc" : "username";
+			if (searchString != null)
+			{
+				pageNumber = 1;
+			}
+			else
+			{
+				searchString = currentFilter;
+			}
+			ViewData["CurrentFilter"] = searchString;
+
+			//var list = repository.Recipes;
+			var list = from s in repository.Recipes
+					   select s;
+			// only list the recipes of the login users unless it is admin
+			if (User.Identity.IsAuthenticated && !User.IsInRole("Admin")) {
 				list = list.Where(r => r.UserName == User.Identity.Name);
 			}
-			list = list.OrderBy(r => r.ID)
-					.Skip((recipePage - 1) * PageSize)
-					.Take(PageSize);
+			if (!String.IsNullOrEmpty(searchString))
+			{
+				list = list.Where(s => s.Name.Contains(searchString)
+									   || s.UserName.Contains(searchString));
+			}
+			switch (sortOrder)
+			{
+				case "name_desc":
+					list = list.OrderByDescending(s => s.Name);
+					break;
+				case "date":
+					list = list.OrderBy(s => s.Updated);
+					break;
+				case "date_desc":
+					list = list.OrderByDescending(s => s.Updated);
+					break;
+				case "category":
+					list = list.OrderBy(s => s.CategoryID);
+					break;
+				case "category_desc":
+					list = list.OrderByDescending(s => s.CategoryID);
+					break;
+				case "cookingtime":
+					list = list.OrderBy(s => s.CookingTime);
+					break;
+				case "cookingtime_desc":
+					list = list.OrderByDescending(s => s.CookingTime);
+					break;
+				case "username":
+					list = list.OrderBy(s => s.UserName);
+					break;
+				case "username_desc":
+					list = list.OrderByDescending(s => s.UserName);
+					break;
+				default:
+					list = list.OrderBy(s => s.Name);
+					break;
+			}
+			//list = list.Skip((pageNumber - 1) * PageSize ?? 1).Take(PageSize);
 
 			foreach (var p in list) {
 				p.Category = repository.GetCategory(p.CategoryID);
 			}
-			return View(list);
+			//return View(list);
+			return View(await PaginatedList<Recipe>.CreateAsync(list, pageNumber ?? 1, PageSize));
 			//PagingInfo = new PagingInfo
 			//	{
 			//		CurrentPage = recipePage,
