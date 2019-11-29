@@ -58,7 +58,6 @@ namespace YummyMummy.Models
 			this.formfields.Add("Description", "Recipe Description");
 			this.formfields.Add("CookingTime", "CookingTime(min)");
 			this.formfields.Add("Cost", "Cost (CAD)");
-
 		}
 
 		//recipe constructor1
@@ -84,9 +83,7 @@ namespace YummyMummy.Models
 				this.CookingTime = CookingTime;
 				this.Cost = Cost;
 			}
-
 		//recipe constructor3
 		public Recipe() { this.initDict(); }
-	}//end of Recipe class
-	
+	}//end of Recipe class	
 }

@@ -248,8 +248,7 @@ namespace YummyMummy.Models
 					new RecipeIngredient { RecipeID = 10, IngredientID = 17, Amount = 2, Unit = "liter" },
 					new RecipeIngredient { RecipeID = 9, IngredientID = 9, Amount = 100, Unit = "g" }
 
-				);
-				context.SaveChanges();
+				); context.SaveChanges();
 			}
 
 			if (!context.RecipeReviews.Any())
@@ -296,10 +295,8 @@ namespace YummyMummy.Models
 					new RecipeReview { RecipeID = 10, FirstName = "Mark", LastName = "Gates", Email = "mg@hotmail.com", Telephone = "888-888-8888", Message = "My little kids love this very much. Thanks." },
 					new RecipeReview { RecipeID = 10, FirstName = "Joe", LastName = "Black", Email = "jb@hotmail.com", Telephone = "888-888-8888", Message = "My grandpa love this very much.  Thanks." }
 
-				);
-				context.SaveChanges();
+				); context.SaveChanges();
 			}
-
 		}
 	}
 }

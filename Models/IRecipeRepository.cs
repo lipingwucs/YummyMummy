@@ -37,6 +37,4 @@ namespace YummyMummy.Models
 		RecipeReview DeleteRecipeReview(int ID);
 		RecipeReview GetRecipeReview(int ID);
 	}
-
-
 }

@@ -30,7 +30,7 @@ namespace YummyMummy.Models
 			var found =  this.context.Recipes
 				.Include(r => r.Category)
 				.Include(r => r.RecipeReviews)
-			   .Include(r => r.RecipeIngredients)
+			    .Include(r => r.RecipeIngredients)
 			   .ThenInclude(ri => ri.Ingredient)
 			   .AsNoTracking()
 			   .FirstOrDefault(p => p.ID == ID);
@@ -38,12 +38,12 @@ namespace YummyMummy.Models
 
 		}
 
-		//Recipe create
+		//Recipe create/update   
 		public void SaveRecipe(Recipe recipe)
 		{
 			if (recipe.ID == 0)
 			{
-				context.Recipes.Add(recipe);
+				context.Recipes.Add(recipe);    //if recipe is not exist, just add
 			}
 			else
 			{
@@ -56,7 +56,7 @@ namespace YummyMummy.Models
 					dbEntry.Description = recipe.Description;
 					dbEntry.CookingTime = recipe.CookingTime;
 					dbEntry.Cost = recipe.Cost;
-				}
+				}   //if recipe exist, updated the recipe
 			}
 			context.SaveChanges();
 		}
@@ -282,14 +282,12 @@ namespace YummyMummy.Models
 			   .AsNoTracking()
 			   .FirstOrDefault(p => p.ID == ID);
 			return found;
-
 		}
 
 		public RecipeReview SaveRecipeReview(RecipeReview recipeReview)
 		{
 			if (recipeReview.ID == 0)
 			{
-
 				context.RecipeReviews.Add(recipeReview);
 			}
 			else
@@ -308,8 +306,8 @@ namespace YummyMummy.Models
 			}
 			context.SaveChanges();
 			return recipeReview;
-
 		}
+
 		//RecipeReview delete
 		public RecipeReview DeleteRecipeReview(int ID)
 		{
@@ -321,6 +319,5 @@ namespace YummyMummy.Models
 			}
 			return dbEntry;
 		}
-
 	}
 }

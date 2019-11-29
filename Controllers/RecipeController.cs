@@ -31,7 +31,6 @@ namespace YummyMummy.Controllers
 					.Skip((recipePage - 1) * PageSize)
 					.Take(PageSize);
 
-
 			foreach (var p in list) {
 				p.Category = repository.GetCategory(p.CategoryID);
 			}
@@ -43,7 +42,6 @@ namespace YummyMummy.Controllers
 			//		TotalItems = repository.Recipes.Count()
 			//	});
 		}
-
 
 		// GET: Recipe
 		[AllowAnonymous]
@@ -130,7 +128,7 @@ namespace YummyMummy.Controllers
 			Recipe found = repository.GetRecipe(ID);
 			if (!User.IsInRole("Admin") && User.Identity.Name != found.UserName)
 			{
-				TempData["message"] = "!!!You are not the owner, you can't Delete the Recipe!";
+				TempData["message"] = "!!!You are not the author, you can't Delete the Recipe!";
 				return RedirectToAction(nameof(Details), new { id = found.ID });
 			}
 			ViewBag.Message = "Are you sure want to delete the recipe [" + found.Name + "]  ?";
@@ -202,8 +200,7 @@ namespace YummyMummy.Controllers
 			//if there is something wrong with the data values
 			formdata.Recipe = repository.GetRecipe(formdata.RecipeID);
 			this.PopulateIngredientsDropDownList(formdata.IngredientID);
-			return View(formdata);
-			
+			return View(formdata);			
 		}
 
 		private void PopulateIngredientsDropDownList(object selectedIngredient = null)

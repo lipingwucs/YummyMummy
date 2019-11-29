@@ -24,14 +24,11 @@ namespace YummyMummy.Models
 		{
 			this.Name = Name;			
 		}
-
+		// Category constructor3
 		public Category(int CatID, string Name)
 		{
 			this.ID = CatID;
 			this.Name = Name;
 		}
 	}//end of Category Class
-
-	
-
 }
