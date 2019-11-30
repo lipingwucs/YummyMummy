@@ -85,6 +85,7 @@ namespace YummyMummy
 
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
+			// configure the required Session services
 			services.AddSession(options =>
 			{
 				// Set a short timeout for easy testing.
@@ -115,6 +116,10 @@ namespace YummyMummy
 			app.UseStaticFiles();
 			// app.UseCookiePolicy();
 			app.UseAuthentication();
+
+			//enable session before MVC
+			app.UseSession();
+
 			app.UseMvc(routes =>
 			{
 				routes.MapRoute(

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YummyMummy.Models;
+using YummyMummy.Infrastructure;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +15,7 @@ namespace YummyMummy.Controllers
 	public class IngredientController : Controller
 	{
 		private IRecipeRepository repository;
+		public int PageSize = 10;
 		public IngredientController(IRecipeRepository repo)
 		{
 			repository = repo;
@@ -27,28 +29,61 @@ namespace YummyMummy.Controllers
 		}
 
 		// GET: /Ingredient/List
-		[HttpGet] //View list
+		// support filter by search string, sorting, pagination
 		[AllowAnonymous]
-		public ActionResult List()
+		public async Task<IActionResult> List(string sortOrder,
+			string currentFilter,
+			string searchString,
+			int? pageNumber)
 		{
-			ViewBag.Message = "Yummy Mummy's Kitchen Recipe Ingredient List.";
-			return View(repository.Ingredients);
-		}
+			ViewData["CurrentSort"] = sortOrder;
+			ViewData["IDSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+			ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+			ViewData["UpdatedSortParm"] = sortOrder == "date" ? "date_desc" : "date";
 
-		// POST: filter by search string /Ingredient/List
-		[HttpPost]// search using post
-		[AllowAnonymous]
-		public ActionResult List(string searchString, bool notUsed)
-		{
-			ViewBag.Message = "Yummy Mummy's Kitchen Recipe Ingredient List.";
+			if (searchString != null)
+			{
+				pageNumber = 1;
+			}
+			else
+			{
+				searchString = currentFilter;
+			}
+			ViewData["CurrentFilter"] = searchString;
+
+			var list = from s in repository.Ingredients
+					   select s;
+
 			if (!String.IsNullOrEmpty(searchString))
 			{
-				var Ingredients = repository.Ingredients.Where(s => s.Name.Contains(searchString));
-				return View(Ingredients);
-			} else {
-				return View(repository.Ingredients);
+				list = list.Where(s => s.Name.Contains(searchString));
 			}
+			switch (sortOrder)
+			{
+				case "id_desc":
+					list = list.OrderByDescending(s => s.ID);
+					break;
+				case "name":
+					list = list.OrderBy(s => s.Name);
+					break;
+				case "name_desc":
+					list = list.OrderByDescending(s => s.Name);
+					break;
+				case "date":
+					list = list.OrderBy(s => s.Updated);
+					break;
+				case "date_desc":
+					list = list.OrderByDescending(s => s.Updated);
+					break;
+				default:
+					list = list.OrderBy(s => s.ID);
+					break;
+			}
+
+			ViewBag.Message = "Yummy Mummy's Kitchen Recipe Ingredient List";
+			return View(await PaginatedList<Ingredient>.CreateAsync(list, pageNumber ?? 1, PageSize));
 		}
+
 
 		//GET create /Ingredient/Add
 		[HttpGet]

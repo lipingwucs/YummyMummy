@@ -75,7 +75,7 @@ namespace YummyMummy.Models
 
 
 
-		public IEnumerable<Ingredient> Ingredients => context.Ingredients;
+		public DbSet<Ingredient> Ingredients => context.Ingredients;
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		[DefaultValue("newid()")]

@@ -13,7 +13,7 @@ namespace YummyMummy.Models
 		Recipe DeleteRecipe(int ID);
 		Recipe GetRecipe(int ID);
 
-		IEnumerable<Ingredient> Ingredients { get; }
+		DbSet<Ingredient> Ingredients { get; }
 		void SaveIngredient(Ingredient ingredient);//create,update
 		Ingredient DeleteIngredient(int ID);      //delete
 		Ingredient GetIngredient(int ID);        //view details

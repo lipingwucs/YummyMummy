@@ -17,7 +17,7 @@ namespace YummyMummy.Controllers
 	public class RecipeController : Controller
     {
 		private IRecipeRepository repository;
-		public int PageSize = 4;		
+		public int PageSize = 4;
 		public RecipeController(IRecipeRepository repo)
 		{
 			repository = repo;
@@ -30,7 +30,8 @@ namespace YummyMummy.Controllers
 			int? pageNumber)
 		{
 			ViewData["CurrentSort"] = sortOrder;
-			ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+			ViewData["IDSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+			ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
 			ViewData["UpdatedSortParm"] = sortOrder == "date" ? "date_desc" : "date";
 			ViewData["CategorySortParm"] = sortOrder == "category" ? "category_desc" : "category";
 			ViewData["CookingtimeSortParm"] = sortOrder == "cookingtime" ? "cookingtime_desc" : "cookingtime";
@@ -60,6 +61,12 @@ namespace YummyMummy.Controllers
 			}
 			switch (sortOrder)
 			{
+				case "id_desc":
+					list = list.OrderByDescending(s => s.ID);
+					break;
+				case "name":
+					list = list.OrderBy(s => s.Name);
+					break;
 				case "name_desc":
 					list = list.OrderByDescending(s => s.Name);
 					break;
@@ -81,6 +88,12 @@ namespace YummyMummy.Controllers
 				case "cookingtime_desc":
 					list = list.OrderByDescending(s => s.CookingTime);
 					break;
+				case "cost":
+					list = list.OrderBy(s => s.Cost);
+					break;
+				case "cost_desc":
+					list = list.OrderByDescending(s => s.Cost);
+					break;
 				case "username":
 					list = list.OrderBy(s => s.UserName);
 					break;
@@ -88,22 +101,16 @@ namespace YummyMummy.Controllers
 					list = list.OrderByDescending(s => s.UserName);
 					break;
 				default:
-					list = list.OrderBy(s => s.Name);
+					list = list.OrderBy(s => s.ID);
 					break;
 			}
-			//list = list.Skip((pageNumber - 1) * PageSize ?? 1).Take(PageSize);
 
-			foreach (var p in list) {
+			var data = await PaginatedList<Recipe>.CreateAsync(list, pageNumber ?? 1, PageSize);
+			foreach (var p in data)
+			{
 				p.Category = repository.GetCategory(p.CategoryID);
 			}
-			//return View(list);
-			return View(await PaginatedList<Recipe>.CreateAsync(list, pageNumber ?? 1, PageSize));
-			//PagingInfo = new PagingInfo
-			//	{
-			//		CurrentPage = recipePage,
-			//		ItemsPerPage = PageSize,
-			//		TotalItems = repository.Recipes.Count()
-			//	});
+			return View(data);
 		}
 
 		// GET: Recipe
