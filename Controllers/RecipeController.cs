@@ -17,7 +17,7 @@ namespace YummyMummy.Controllers
 	public class RecipeController : Controller
     {
 		private IRecipeRepository repository;
-		public int PageSize = 4;
+		public int PageSize = 10;
 		public RecipeController(IRecipeRepository repo)
 		{
 			repository = repo;
@@ -56,8 +56,7 @@ namespace YummyMummy.Controllers
 			}
 			if (!String.IsNullOrEmpty(searchString))
 			{
-				list = list.Where(s => s.Name.Contains(searchString)
-									   || s.UserName.Contains(searchString));
+				list = list.Where(s => s.Name.Contains(searchString) );
 			}
 			switch (sortOrder)
 			{
