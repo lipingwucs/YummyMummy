@@ -11,6 +11,7 @@ using YummyMummy.Models;
 using YummyMummy.Data;
 using YummyMummy.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace YummyMummy
 {
@@ -85,6 +86,11 @@ namespace YummyMummy
 
 			// Add application services.
 			services.AddTransient<IEmailSender, EmailSender>();
+
+			services.AddTransient<IMenu, MenuService>();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddScoped(sp => Cart.GetCart(sp));
+
 			// configure the required Session services
 			services.AddSession(options =>
 			{

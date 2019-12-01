@@ -319,5 +319,57 @@ namespace YummyMummy.Models
 			}
 			return dbEntry;
 		}
+
+		public DbSet<Menu> Menus => context.Menus;
+
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		[DefaultValue("newid()")]
+		public Guid MenuFileToken { get; set; }
+
+		// load Review with related data
+		public Menu GetMenu(int ID)
+		{
+			var found = this.context.Menus
+			   .Include(ri => ri.MenuItems)
+			   .AsNoTracking()
+			   .FirstOrDefault(p => p.ID == ID);
+			return found;
+		}
+
+		public Menu SaveMenu(Menu menu)
+		{
+			if (menu.ID == 0)
+			{
+				context.Menus.Add(menu);
+			}
+			else
+			{
+				Menu dbEntry = context.Menus
+				.FirstOrDefault(p => p.ID == menu.ID);
+				if (dbEntry != null)
+				{
+					dbEntry.Name = menu.Name;
+					dbEntry.MenuCreated = menu.MenuCreated;
+					dbEntry.Description = menu.Description;
+					dbEntry.TotalCookingTime = menu.TotalCookingTime;
+					dbEntry.TotalCost = menu.TotalCost;
+				}
+			}
+			context.SaveChanges();
+			return menu;
+		}
+
+		//Menu delete
+		public Menu DeleteMenu(int ID)
+		{
+			Menu dbEntry = this.GetMenu(ID);
+			if (dbEntry != null)
+			{
+				context.Menus.Remove(dbEntry);
+				context.SaveChanges();
+			}
+			return dbEntry;
+		}
+
 	}
 }

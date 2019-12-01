@@ -1,0 +1,72 @@
+﻿@model YummyMummy.Infrastructure.PaginatedList<Menu>
+
+@{
+    ViewBag.Title = "Recipe Menu List";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title> Yummy Mummy's  Recipe Menu</title>
+</head>
+<body>
+    <div>
+        <h3> Yummy Mummy's Kitchen Recipe Menu</h3>
+        <form asp-action="List" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+                    <input type="submit" value="Search" class="btn btn-default" /> |
+                    <a asp-action="List">Back to Full List</a>
+                </p>
+            </div>
+        </form>
+        @if (TempData["message"] != null)
+        {
+            <div class="text-center alert-success">@TempData["message"]</div>
+        }
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="40%"><a asp-action="List" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Menu Name</a></th>
+                    <th width="10%"><a asp-action="List" asp-route-sortOrder="@ViewData["CookingtimeSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Total Cooking Time(min)</a></th>
+                    <th width="10%"><a asp-action="List" asp-route-sortOrder="@ViewData["CostSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Budget (cad)</a></th>
+                    <th width="20%"><a asp-action="List" asp-route-sortOrder="@ViewData["PlacedSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Created Time</a></th>
+                    <th width="20%"> Action </th>
+                </tr>
+            </thead>
+            @foreach (var c in Model)
+            {
+                @Html.Partial("~/Views/Shared/_PartialMenuList.cshtml", c)
+            }
+        </table>
+
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+        <div>
+            <a asp-action="List"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @prevDisabled">
+                Previous
+            </a>
+            @Model.PageIndex/@Model.TotalPages
+            <a asp-action="List"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @nextDisabled">
+                Next
+            </a>
+        </div>
+        <div class="text-center">
+            <a asp-action="Add">Add New Menu</a>
+        </div>
+    </div>
+</body>
+</html>

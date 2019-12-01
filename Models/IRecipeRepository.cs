@@ -37,5 +37,10 @@ namespace YummyMummy.Models
 		RecipeReview SaveRecipeReview(RecipeReview recipeReview);
 		RecipeReview DeleteRecipeReview(int ID);
 		RecipeReview GetRecipeReview(int ID);
+
+		DbSet<Menu> Menus { get; }
+		Menu SaveMenu(Menu menu);
+		Menu DeleteMenu(int ID);
+		Menu GetMenu(int ID);
 	}
 }

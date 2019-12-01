@@ -1,9 +1,10 @@
-﻿@model YummyMummy.Models.Ingredient
+﻿@model YummyMummy.Models.Menu
 
 <tr>
-    <td>@Model.ID</td>
     <td>@Model.Name</td>
-    <td>@Model.Updated</td>
+    <td>@Model.TotalCost</td>
+    <td>@Model.TotalCookingTime</td>
+    <td>@Model.MenuCreated</td>
     <td>
         <a asp-action="Update" asp-route-id="@Model.ID">Update</a> |
         <a asp-action="Details" asp-route-id="@Model.ID"> Details </a> |

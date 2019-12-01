@@ -1,0 +1,76 @@
+﻿@model YummyMummy.Models.CartViewModels.CartIndexModel
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<div class="row checkoutForm" style="margin-bottom:250px;">
+    <div style="background-color:rgba(248,248,248,0.6);">
+        <h2>
+            Your shopping cart
+            <br />Here are the Recipes in your shopping cart.
+        </h2>
+    </div>
+    <table class="table table-hover table-dark table-stripped table-bordered">
+        <thead>
+            <tr>
+                <th>Recipe</th>
+                <th>Selected amount</th>
+                <th class="text-right">Cost</th>
+                <th class="text-right">Cooking Time</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Cart.CartItems)
+            {
+                <tr>
+                    <td class="text-left"><a class="btn btn-info" asp-controller="Recipe" asp-action="Details" asp-route-id="@line.RecipeID">@line.Recipe.Name</a></td>
+                    <td class="text-center">@line.Amount</td>
+                    <td class="text-right">@((line.Amount * line.Recipe.Cost).ToString("c", CultureInfo.CreateSpecificCulture("en-US")))</td>
+                    <td class="text-right">
+                        @((line.Amount * line.Recipe.CookingTime))
+                    </td>
+                    <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="Cart" asp-action="RemoveFromCart" asp-route-foodId="@line.RecipeID"><i class="text-danger">Remove</i></a></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" class="text-right">Total Cost:</td>
+                <td colspan="2" class="text-right">
+                    @(Model.TotalCost.ToString("c", CultureInfo.CreateSpecificCulture("en-US")))
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-right">Total Cooking Time:</td>
+                <td class="text-right">
+                    @Model.TotalCookingTime
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    @if (ViewBag.InvalidAmountText != null)
+    {
+        <div>
+            <p class="invalidAmount">@ViewBag.InvalidAmountText</p>
+        </div>
+    }
+    <div>
+        <a class="btn btn-back" asp-action="Back" asp-route-returnUrl="@Model.ReturnUrl">Back</a>
+    </div>
+    @if (Model.Cart.CartItems.Count() != 0)
+    {
+        <div class="text-right" style="float:right">
+            <div class="btn-group ">
+                <a class="btn btn-success" asp-controller="Menu" asp-action="Add">Save to My Menu</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Your cart is empty, add some items for your menu</p>
+    }
+</div>
+

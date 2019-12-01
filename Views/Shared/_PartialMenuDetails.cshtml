@@ -1,0 +1,12 @@
+﻿@model YummyMummy.Models.Menu
+
+@foreach (var info in typeof(Menu).GetProperties())
+{
+    @if (info.Name != "Recipemenus")
+    {
+    <div class="form-group">
+        <label for="@info.Name"> @info.Name:</label>
+        <label for="@info.Name">@info.GetValue(Model, null)</label>
+    </div>
+    }
+}

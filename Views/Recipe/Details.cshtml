@@ -13,8 +13,9 @@
 </head>
 <body>
     <h2>
-    Recipe Summary: &nbsp; &nbsp; <a asp-action="Update" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Update</a> &nbsp;
-    <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@Model.ID"> Delete </a>
+        Recipe Summary: &nbsp; &nbsp; <a asp-action="Update" class="btn btn-sm btn-warning" asp-route-id="@Model.ID">Update</a> &nbsp;
+        <a asp-action="Delete" class="btn btn-danger btn-sm" asp-route-id="@Model.ID">Delete</a> 
+        &nbsp;|&nbsp; <a class="btn btn-primary" asp-controller="Cart" asp-action="AddToCart" asp-route-recipeId="@Model.ID" asp-route-returnUrl="@Context.Request.Path">Add to Cart</a>
     </h2>
     <hr />
     @if (TempData["message"] != null)
