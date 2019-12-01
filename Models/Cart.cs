@@ -42,7 +42,8 @@ namespace YummyMummy.Models
 				shoppingCartItem = new CartItem
 				{
 					CartID = ID,
-					Recipe = recipe,
+					RecipeID = recipe.ID,
+					SortNumber = 1,
 					Amount = amount
 				};
 				_context.CartItems.Add(shoppingCartItem);
