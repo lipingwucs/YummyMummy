@@ -245,8 +245,8 @@ namespace YummyMummy.Controllers
 			return View(model);
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
+
+		//[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Logout()
 		{
 			await _signInManager.SignOutAsync();

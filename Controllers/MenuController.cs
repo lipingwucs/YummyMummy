@@ -22,7 +22,6 @@ namespace YummyMummy.Controllers
 		}
 
 		// GET: /Menu/
-		[AllowAnonymous]
 		public ActionResult Index()
 		{
 			return RedirectToAction("List");
@@ -30,7 +29,6 @@ namespace YummyMummy.Controllers
 
 		// GET: /Menu/List
 		// support filter by search string, sorting, pagination
-		[AllowAnonymous]
 		public async Task<IActionResult> List(string sortOrder,
 			string currentFilter,
 			string searchString,

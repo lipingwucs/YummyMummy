@@ -1,0 +1,12 @@
+﻿@model YummyMummy.Models.CartViewModels.CartIndexModel
+
+<ul class="nav navbar-nav navbar-right">
+    <li class="nav-item">
+        <a asp-area="" asp-controller="Cart" asp-action="Index" style="padding:5px;color: rgba(0,0,0,.7);text-decoration: none;">
+            <i class="fas fa-shopping-cart fa-3x"></i>
+            <span style="font-size:20px; text-align:center; margin:5px;" title="@Model.Cart.CartItems.Count() In Shopping Cart">
+                @Html.Raw(@Model.Cart.CartItems.Count())
+            </span>
+        </a>
+        </li>
+    </ul>
