@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using YummyMummy.Data;
+using System.Collections;
 
 namespace YummyMummy.Models
 {
@@ -103,6 +104,66 @@ namespace YummyMummy.Models
 		{
 			return _context.CartItems.Where(c => c.CartID == ID)
 				.Select(c => c.Recipe.CookingTime * c.Amount).Sum();
+		}
+
+		public IQueryable<RecipeIngredient> GetIngredientsListWithAmount()
+		{
+			string mycartID = this.ID;
+			var ingredientsList = (from d in _context.RecipeIngredients
+								   join f in _context.CartItems
+								   on d.RecipeID equals f.RecipeID
+								   where (f.CartID == mycartID)
+								   select new RecipeIngredient
+								   {
+									   IngredientID = d.IngredientID,
+									   Unit = d.Unit,
+									   Amount = d.Amount * f.Amount
+								   }).AsNoTracking();
+
+			Dictionary<string, RecipeIngredient> ht = new Dictionary<string, RecipeIngredient>();
+			string key = "";
+			foreach (var p in ingredientsList)
+			{
+				key = p.IngredientID + ":" + p.Unit;
+				if (ht.ContainsKey(key))
+				{
+					((RecipeIngredient)ht[key]).Amount += p.Amount;
+				} else
+				{
+					p.Ingredient = _context.Ingredients.Where(x => x.ID == p.IngredientID).FirstOrDefault();
+					ht.Add(key, p);
+				}
+			}
+			
+			var list = new List<RecipeIngredient>();
+			foreach (KeyValuePair<string, RecipeIngredient> kvp in ht) {
+				list.Add(kvp.Value);
+			}
+			return list.AsQueryable();
+
+		}
+
+		public IQueryable<RecipeIngredient> GetIngredientsList()
+		{
+			string mycartID = this.ID;
+			var ingredientsList = (from d in _context.RecipeIngredients
+								  join f in _context.CartItems
+								  on d.RecipeID equals f.RecipeID
+								  where (f.CartID == mycartID)
+								  group d by new { d.IngredientID, d.Unit } into g
+								  select new RecipeIngredient
+								  {
+									  IngredientID = g.Key.IngredientID,
+									  Unit = g.Key.Unit,
+									  Amount = g.Sum(x => x.Amount)
+								  }).AsNoTracking();
+
+			foreach (var p in ingredientsList)
+			{
+				p.Ingredient = _context.Ingredients.Where(x => x.ID==p.IngredientID).FirstOrDefault();
+			}
+			return ingredientsList;
+			
 		}
 
 	}

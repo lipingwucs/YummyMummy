@@ -24,6 +24,7 @@ namespace YummyMummy.Components
 				Cart = _shoppingCart,
 				TotalCost = _shoppingCart.GetCartTotalCost(),
 				TotalCookingTime = _shoppingCart.GetCartTotalCookingTime()
+				
 			};
 			return View(model);
 		}

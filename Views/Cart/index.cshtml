@@ -17,7 +17,7 @@
             <tr>
                 <th>Recipe</th>
                 <th>Selected amount</th>
-                <th class="text-right">Cost</th>
+                <th class="text-left">Cost</th>
                 <th class="text-right">Cooking Time</th>
                 <th></th>
             </tr>
@@ -28,7 +28,7 @@
                 <tr>
                     <td class="text-left"><a class="btn btn-info" asp-controller="Recipe" asp-action="Details" asp-route-id="@line.RecipeID">@line.Recipe.Name</a></td>
                     <td class="text-center">@line.Amount</td>
-                    <td class="text-right">@((line.Amount * line.Recipe.Cost).ToString("c", CultureInfo.CreateSpecificCulture("en-US")))</td>
+                    <td class="text-left">@((line.Amount * line.Recipe.Cost).ToString("c", CultureInfo.CreateSpecificCulture("en-US")))</td>
                     <td class="text-right">
                         @((line.Amount * line.Recipe.CookingTime))
                     </td>
@@ -39,18 +39,50 @@
         <tfoot>
             <tr>
                 <td colspan="2" class="text-right">Total Cost:</td>
-                <td colspan="2" class="text-right">
+                <td colspan="2" class="text-left">
                     @(Model.TotalCost.ToString("c", CultureInfo.CreateSpecificCulture("en-US")))
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="text-right">Total Cooking Time:</td>
-                <td class="text-right">
+                <td colspan="2" class="text-right">Total Cooking Time:</td>
+                <td  colspan="2" class="text-right">
                     @Model.TotalCookingTime
                 </td>
             </tr>
         </tfoot>
     </table>
+
+    <div style="background-color:rgba(248,248,248,0.6);">
+        <h2>
+            All Ingredients for the recipes in your shopping cart.
+        </h2>
+    </div>
+    <table class="table table-hover table-dark table-stripped table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Ingredient</thclass="text-center">
+                <th class="text-center">Amount</th>
+                <th class="text-center">Unit</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.IngredientsList)
+            {
+                <tr>
+                    <td class="text-left"><a class="btn btn-info" asp-controller="Ingredient" asp-action="Details" asp-route-id="@line.Ingredient.ID">@line.Ingredient.Name</a></td>
+                    <td class="text-center">@line.Amount</td>
+                    
+                    <td class="text-center">
+                        @(line.Unit )
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+        
+    </table>
+
     @if (ViewBag.InvalidAmountText != null)
     {
         <div>

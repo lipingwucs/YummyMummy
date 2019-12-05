@@ -51,9 +51,10 @@ namespace YummyMummy.Controllers
 			var list = from s in repository.Recipes
 					   select s;
 			// only list the recipes of the login users unless it is admin
-			if (User.Identity.IsAuthenticated && !User.IsInRole("Admin")) {
-				list = list.Where(r => r.UserName == User.Identity.Name);
-			}
+			//if (User.Identity.IsAuthenticated && !User.IsInRole("Admin")) {
+			//	list = list.Where(r => r.UserName == User.Identity.Name);
+			//}
+
 			if (!String.IsNullOrEmpty(searchString))
 			{
 				list = list.Where(s => s.Name.Contains(searchString) );

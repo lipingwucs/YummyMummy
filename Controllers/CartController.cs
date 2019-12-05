@@ -28,6 +28,7 @@ namespace YummyMummy.Controllers
 				Cart = _shoppingCart,
 				TotalCost = _shoppingCart.GetCartTotalCost(),
 				TotalCookingTime = _shoppingCart.GetCartTotalCookingTime(),
+				IngredientsList = _shoppingCart.GetIngredientsListWithAmount(),
 				ReturnUrl = returnUrl
 			};
 
