@@ -331,6 +331,7 @@ namespace YummyMummy.Models
 		{
 			var found = this.context.Menus
 			   .Include(ri => ri.MenuItems)
+			   .ThenInclude(p=>p.Recipe)
 			   .AsNoTracking()
 			   .FirstOrDefault(p => p.ID == ID);
 			return found;
@@ -349,10 +350,7 @@ namespace YummyMummy.Models
 				if (dbEntry != null)
 				{
 					dbEntry.Name = menu.Name;
-					dbEntry.MenuCreated = menu.MenuCreated;
 					dbEntry.Description = menu.Description;
-					dbEntry.TotalCookingTime = menu.TotalCookingTime;
-					dbEntry.TotalCost = menu.TotalCost;
 				}
 			}
 			context.SaveChanges();
@@ -365,11 +363,14 @@ namespace YummyMummy.Models
 			Menu dbEntry = this.GetMenu(ID);
 			if (dbEntry != null)
 			{
+				context.MenuItems.RemoveRange(dbEntry.MenuItems);
 				context.Menus.Remove(dbEntry);
 				context.SaveChanges();
 			}
 			return dbEntry;
 		}
+
+
 
 	}
 }

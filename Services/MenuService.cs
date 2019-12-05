@@ -23,12 +23,14 @@ namespace YummyMummy.Services
 		public void CreateMenu(Menu menu)
 		{
 			menu.MenuCreated = DateTime.Now;
-
+			menu.TotalCost = _shoppingCart.GetCartTotalCost();
+			menu.TotalCookingTime = _shoppingCart.GetCartTotalCookingTime();
 			_context.Add(menu);
 
-			var menuItems = new List<MenuItem>(_shoppingCart.CartItems.Count());
+			var cartItems = _shoppingCart.GetCartItems();
+			var menuItems = new List<MenuItem>(cartItems.Count());
 
-			foreach (var item in _shoppingCart.CartItems)
+			foreach (var item in cartItems)
 			{
 				menuItems.Add(
 					new MenuItem
@@ -41,6 +43,8 @@ namespace YummyMummy.Services
 			}
 			_context.MenuItems.AddRange(menuItems);
 			_context.SaveChanges();
+			// clear shopping cart after saved it to mymenu
+			_shoppingCart.ClearCart();
 		}
 
 		public Menu GetById(int ID)
@@ -52,7 +56,7 @@ namespace YummyMummy.Services
 		public IEnumerable<Menu> GetByUserId(string userId)
 		{
 			return GetAll()
-				.Where(menu => menu.User.Id == userId);
+				.Where(menu => menu.UserID == userId);
 		}
 
 		public IEnumerable<Menu> GetFilteredMenus(
@@ -124,9 +128,9 @@ namespace YummyMummy.Services
 		public IEnumerable<Menu> GetAll()
 		{
 			return _context.Menus
-				.AsNoTracking()
-				.Include(menu => menu.User)
-				.Include(menu => menu.MenuItems).ThenInclude(line => line.Recipe);
+				.Include(menu => menu.MenuItems)
+				.ThenInclude(line => line.Recipe)
+				.AsNoTracking();
 		}
 	}
 }

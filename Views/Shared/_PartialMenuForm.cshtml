@@ -3,21 +3,26 @@
 <form method="post">
     @foreach (var info in typeof(Menu).GetProperties())
     {
-        <div class="form-group">
-            @if (info.Name == "ID")
-            {
-                <input type="hidden" asp-for="ID" />
-            }
-            else if (info.Name == "Recipemenus"|| info.Name == "Created" ||  info.Name == "Updated") 
-            {
-            }
-            else 
-            {
-                <label for="@info.Name"> @info.Name:</label>
-                <input id="@info.Name" name="@info.Name" value="@info.GetValue(Model, null)" class="form-control" />
-            }
-
+    <div class="form-group">
+        @if (info.Name == "ID")
+        {
+            <input type="hidden" asp-for="ID" />
+        }
+        else if (info.Name == "Name")
+        {
+            <label for="@info.Name"> @info.Name:</label>
+            <input id="@info.Name" name="@info.Name" value="@info.GetValue(Model, null)" class="form-control" />
+        }
+        else if (info.Name == "Description")
+        {
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Description):
         </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Description, 10, 100, null)
+        </div>
+        }
+    </div>
     }
 
     <div class="text-center">

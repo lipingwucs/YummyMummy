@@ -13,15 +13,12 @@ namespace YummyMummy.Models
 
 		public string Name { get; set; }
 		public DateTime MenuCreated { get; set; }
-		[Range(1, 100000)]
 		public double TotalCost { get; set; }
-		[Range(1, 10000)]
 		public int TotalCookingTime { get; set; }
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
 		public string UserID { get; set; } // the registered login name
-		public AppUser User { get; set; }
 		public IEnumerable<MenuItem> MenuItems { get; set; }
 	}
 }

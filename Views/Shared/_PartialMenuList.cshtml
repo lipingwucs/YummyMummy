@@ -1,7 +1,7 @@
 ﻿@model YummyMummy.Models.Menu
 
 <tr>
-    <td>@Model.Name</td>
+    <td><a asp-action="Details" asp-route-id="@Model.ID">@Model.Name</a></td>
     <td>@Model.TotalCost</td>
     <td>@Model.TotalCookingTime</td>
     <td>@Model.MenuCreated</td>

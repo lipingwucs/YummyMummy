@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YummyMummy.Models;
 using YummyMummy.Infrastructure;
+using YummyMummy.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,9 +17,12 @@ namespace YummyMummy.Controllers
 	{
 		private IRecipeRepository repository;
 		public int PageSize = 10;
-		public MenuController(IRecipeRepository repo)
+		private IMenu _menuSvc;
+
+		public MenuController(IRecipeRepository repo, IMenu _menuSvc)
 		{
 			repository = repo;
+			this._menuSvc = _menuSvc;
 		}
 
 		// GET: /Menu/
@@ -112,7 +116,8 @@ namespace YummyMummy.Controllers
 			if (ModelState.IsValid)
 			{
 				formdata.ID = 0;
-				repository.SaveMenu(formdata);
+				formdata.UserID = User.Identity.Name;
+				this._menuSvc.CreateMenu(formdata);
 				TempData["message"] = "You have added a new Menu [" + formdata.Name + "] Successfully! ";
 				return RedirectToAction("List");
 			}
