@@ -14,7 +14,7 @@ namespace YummyMummy.Models.ManageViewModels
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "{0} 必须多于 {2} 位并且少于 {1} 位。", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} must be between {2} and {1} 。", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; }

@@ -26,7 +26,6 @@ namespace YummyMummy.Models
 		[Required]
 		[DataType(DataType.MultilineText)]
 		public string Message { get; set; }
-
 	}
 
 

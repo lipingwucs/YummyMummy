@@ -20,6 +20,30 @@ namespace YummyMummy.Migrations
                 .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("YummyMummy.Models.CartItem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Amount");
+
+                    b.Property<string>("CartID");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<int>("RecipeID");
+
+                    b.Property<int>("SortNumber");
+
+                    b.Property<DateTime>("Updated");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RecipeID");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("YummyMummy.Models.Category", b =>
                 {
                     b.Property<int>("ID")
@@ -74,6 +98,58 @@ namespace YummyMummy.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Inquirys");
+                });
+
+            modelBuilder.Entity("YummyMummy.Models.Menu", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("MenuCreated");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("TotalCookingTime");
+
+                    b.Property<double>("TotalCost");
+
+                    b.Property<DateTime>("Updated");
+
+                    b.Property<string>("UserID");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("YummyMummy.Models.MenuItem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Amount");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<int>("MenuID");
+
+                    b.Property<int>("RecipeID");
+
+                    b.Property<int>("SortNumber");
+
+                    b.Property<DateTime>("Updated");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MenuID");
+
+                    b.HasIndex("RecipeID");
+
+                    b.ToTable("MenuItems");
                 });
 
             modelBuilder.Entity("YummyMummy.Models.Recipe", b =>
@@ -160,6 +236,27 @@ namespace YummyMummy.Migrations
                     b.HasIndex("RecipeID");
 
                     b.ToTable("RecipeReviews");
+                });
+
+            modelBuilder.Entity("YummyMummy.Models.CartItem", b =>
+                {
+                    b.HasOne("YummyMummy.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("YummyMummy.Models.MenuItem", b =>
+                {
+                    b.HasOne("YummyMummy.Models.Menu", "Menu")
+                        .WithMany("MenuItems")
+                        .HasForeignKey("MenuID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("YummyMummy.Models.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("YummyMummy.Models.Recipe", b =>

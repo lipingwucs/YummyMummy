@@ -5,8 +5,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using YummyMummy.Models;
 using YummyMummy.Models.ViewModels;
+using YummyMummy.Infrastructure;
 
 
 namespace YummyMummy.Controllers
@@ -15,30 +17,101 @@ namespace YummyMummy.Controllers
 	public class RecipeController : Controller
     {
 		private IRecipeRepository repository;
-		public int PageSize = 100;		
+		public int PageSize = 10;
 		public RecipeController(IRecipeRepository repo)
 		{
 			repository = repo;
 		}
 
 		[AllowAnonymous]
-		public ViewResult List(int recipePage = 1) {
-			var list = repository.Recipes
-			.OrderBy(r => r.ID)
-			.Skip((recipePage - 1) * PageSize)
-			.Take(PageSize);
-			foreach (var p in list) {
+		public async Task<IActionResult> List(string sortOrder,
+			string currentFilter,
+			string searchString,
+			int? pageNumber)
+		{
+			ViewData["CurrentSort"] = sortOrder;
+			ViewData["IDSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+			ViewData["NameSortParm"] = sortOrder == "name" ? "name_desc" : "name";
+			ViewData["UpdatedSortParm"] = sortOrder == "date" ? "date_desc" : "date";
+			ViewData["CategorySortParm"] = sortOrder == "category" ? "category_desc" : "category";
+			ViewData["CookingtimeSortParm"] = sortOrder == "cookingtime" ? "cookingtime_desc" : "cookingtime";
+			ViewData["CostSortParm"] = sortOrder == "cost" ? "cost_desc" : "cost";
+			ViewData["AuthorSortParm"] = sortOrder == "username" ? "username_desc" : "username";
+			if (searchString != null)
+			{
+				pageNumber = 1;
+			}
+			else
+			{
+				searchString = currentFilter;
+			}
+			ViewData["CurrentFilter"] = searchString;
+
+			//var list = repository.Recipes;
+			var list = from s in repository.Recipes
+					   select s;
+			// only list the recipes of the login users unless it is admin
+			//if (User.Identity.IsAuthenticated && !User.IsInRole("Admin")) {
+			//	list = list.Where(r => r.UserName == User.Identity.Name);
+			//}
+
+			if (!String.IsNullOrEmpty(searchString))
+			{
+				list = list.Where(s => s.Name.Contains(searchString) );
+			}
+			switch (sortOrder)
+			{
+				case "id_desc":
+					list = list.OrderByDescending(s => s.ID);
+					break;
+				case "name":
+					list = list.OrderBy(s => s.Name);
+					break;
+				case "name_desc":
+					list = list.OrderByDescending(s => s.Name);
+					break;
+				case "date":
+					list = list.OrderBy(s => s.Updated);
+					break;
+				case "date_desc":
+					list = list.OrderByDescending(s => s.Updated);
+					break;
+				case "category":
+					list = list.OrderBy(s => s.CategoryID);
+					break;
+				case "category_desc":
+					list = list.OrderByDescending(s => s.CategoryID);
+					break;
+				case "cookingtime":
+					list = list.OrderBy(s => s.CookingTime);
+					break;
+				case "cookingtime_desc":
+					list = list.OrderByDescending(s => s.CookingTime);
+					break;
+				case "cost":
+					list = list.OrderBy(s => s.Cost);
+					break;
+				case "cost_desc":
+					list = list.OrderByDescending(s => s.Cost);
+					break;
+				case "username":
+					list = list.OrderBy(s => s.UserName);
+					break;
+				case "username_desc":
+					list = list.OrderByDescending(s => s.UserName);
+					break;
+				default:
+					list = list.OrderBy(s => s.ID);
+					break;
+			}
+
+			var data = await PaginatedList<Recipe>.CreateAsync(list, pageNumber ?? 1, PageSize);
+			foreach (var p in data)
+			{
 				p.Category = repository.GetCategory(p.CategoryID);
 			}
-			return View(list);
-			//PagingInfo = new PagingInfo
-			//	{
-			//		CurrentPage = recipePage,
-			//		ItemsPerPage = PageSize,
-			//		TotalItems = repository.Recipes.Count()
-			//	});
+			return View(data);
 		}
-
 
 		// GET: Recipe
 		[AllowAnonymous]
@@ -87,7 +160,7 @@ namespace YummyMummy.Controllers
 			Recipe found = repository.GetRecipe(ID);
 			if (!User.IsInRole("Admin")  && User.Identity.Name!=found.UserName)
 			{
-				TempData["message"] = "!!!You are not the owner, you can't Edit/Updated the Recipe!";
+				TempData["message"] = "!!!You are not the owner, you can't Update the Recipe!";
 				return RedirectToAction(nameof(Details), new { id = found.ID });
 			}
 			ViewBag.Message = "Edit Recipe";
@@ -101,6 +174,11 @@ namespace YummyMummy.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				if (!User.IsInRole("Admin") && User.Identity.Name != formdata.UserName)
+				{
+					TempData["message"] = "!!!You are not the owner, you can't Update the Recipe!";
+					return RedirectToAction(nameof(Details), new { id = formdata.ID });
+				}
 				repository.SaveRecipe(formdata);
 				TempData["message"] = "You have Updated the Recipe [" + formdata.Name + "] information Successfully! ";
 				return RedirectToAction("List");
@@ -115,9 +193,14 @@ namespace YummyMummy.Controllers
 
 		//GET delete /Recipe/Delete/{ID} confirm page
 		[HttpGet]
-		public ViewResult Delete(int ID)
+		public ActionResult Delete(int ID)
 		{
 			Recipe found = repository.GetRecipe(ID);
+			if (!User.IsInRole("Admin") && User.Identity.Name != found.UserName)
+			{
+				TempData["message"] = "!!!You are not the author, you can't Delete the Recipe!";
+				return RedirectToAction(nameof(Details), new { id = found.ID });
+			}
 			ViewBag.Message = "Are you sure want to delete the recipe [" + found.Name + "]  ?";
 			return View(found);
 		}
@@ -187,8 +270,7 @@ namespace YummyMummy.Controllers
 			//if there is something wrong with the data values
 			formdata.Recipe = repository.GetRecipe(formdata.RecipeID);
 			this.PopulateIngredientsDropDownList(formdata.IngredientID);
-			return View(formdata);
-			
+			return View(formdata);			
 		}
 
 		private void PopulateIngredientsDropDownList(object selectedIngredient = null)

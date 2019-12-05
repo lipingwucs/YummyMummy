@@ -19,7 +19,9 @@ namespace YummyMummy.Data
 		public DbSet<Inquiry> Inquirys { get; set; }
 		public DbSet<RecipeIngredient> RecipeIngredients { get; set; }  //bind table Recipe and Ingredient
 		public DbSet<RecipeReview> RecipeReviews { get; set; }  //bind table RecipeReview
-	//public DbSet<RecipeCategory> RecipeCategories { get; set; } //bind table Recipe and Category
+		public DbSet<CartItem> CartItems { get; set; }
+		public DbSet<Menu> Menus { get; set; }
+		public DbSet<MenuItem> MenuItems { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -47,15 +49,22 @@ namespace YummyMummy.Data
 			/// 
 			/// </summary>
 
-			//配置Passage与PassageCategories的一对多关系
+			//配置 Recipe 与 RecipeIngredients 的一对多关系
 			builder.HasOne(t => t.Recipe)
 				   .WithMany(p => p.RecipeIngredients)
 				   .HasForeignKey(t => t.RecipeID);
 
-			//配置Category与PassageCategories的一对多关系
+			//配置 Ingredient 与 RecipeIngredients 的一对多关系
 			builder.HasOne(t => t.Ingredient)
 				   .WithMany(p => p.RecipeIngredients)
 				   .HasForeignKey(t => t.IngredientID);
+
+			EntityTypeBuilder<MenuItem> builder2 = modelBuilder.Entity<MenuItem>();
+
+			//配置 Menu 与 MenuItem 的一对多关系
+			builder2.HasOne(t => t.Menu)
+				   .WithMany(p => p.MenuItems)
+				   .HasForeignKey(t => t.MenuID);
 
 			//recipe-Ingredient
 			/*

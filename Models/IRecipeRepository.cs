@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,12 +8,12 @@ namespace YummyMummy.Models
 {
 	public interface IRecipeRepository
 	{
-		IEnumerable<Recipe> Recipes { get; }
+		DbSet<Recipe> Recipes { get; }
 		void SaveRecipe(Recipe recipe);
 		Recipe DeleteRecipe(int ID);
 		Recipe GetRecipe(int ID);
 
-		IEnumerable<Ingredient> Ingredients { get; }
+		DbSet<Ingredient> Ingredients { get; }
 		void SaveIngredient(Ingredient ingredient);//create,update
 		Ingredient DeleteIngredient(int ID);      //delete
 		Ingredient GetIngredient(int ID);        //view details
@@ -36,7 +37,10 @@ namespace YummyMummy.Models
 		RecipeReview SaveRecipeReview(RecipeReview recipeReview);
 		RecipeReview DeleteRecipeReview(int ID);
 		RecipeReview GetRecipeReview(int ID);
+
+		DbSet<Menu> Menus { get; }
+		Menu SaveMenu(Menu menu);
+		Menu DeleteMenu(int ID);
+		Menu GetMenu(int ID);
 	}
-
-
 }

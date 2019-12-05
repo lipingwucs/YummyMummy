@@ -25,10 +25,10 @@ namespace YummyMummy.Models
 		public string Name { get; set; }
 
 		[Range(1, 1000)]
-		public int CookingTime { get; set; }
+		public int CookingTime { get; set; } // cooking time in minutes
 
 		[Range(1, 10000)]
-		public double Cost { get; set; }
+		public double Cost { get; set; } // cost in dollar
 
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
@@ -58,7 +58,6 @@ namespace YummyMummy.Models
 			this.formfields.Add("Description", "Recipe Description");
 			this.formfields.Add("CookingTime", "CookingTime(min)");
 			this.formfields.Add("Cost", "Cost (CAD)");
-
 		}
 
 		//recipe constructor1
@@ -84,9 +83,7 @@ namespace YummyMummy.Models
 				this.CookingTime = CookingTime;
 				this.Cost = Cost;
 			}
-
 		//recipe constructor3
 		public Recipe() { this.initDict(); }
-	}//end of Recipe class
-	
+	}//end of Recipe class	
 }

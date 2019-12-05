@@ -18,7 +18,7 @@ namespace YummyMummy.Models
 			this.context = ctx;
 		}
 
-		public IEnumerable<Recipe> Recipes => context.Recipes;		
+		public DbSet<Recipe> Recipes => context.Recipes;		
 		
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		[DefaultValue("newid()")]
@@ -30,7 +30,7 @@ namespace YummyMummy.Models
 			var found =  this.context.Recipes
 				.Include(r => r.Category)
 				.Include(r => r.RecipeReviews)
-			   .Include(r => r.RecipeIngredients)
+			    .Include(r => r.RecipeIngredients)
 			   .ThenInclude(ri => ri.Ingredient)
 			   .AsNoTracking()
 			   .FirstOrDefault(p => p.ID == ID);
@@ -38,12 +38,12 @@ namespace YummyMummy.Models
 
 		}
 
-		//Recipe create
+		//Recipe create/update   
 		public void SaveRecipe(Recipe recipe)
 		{
 			if (recipe.ID == 0)
 			{
-				context.Recipes.Add(recipe);
+				context.Recipes.Add(recipe);    //if recipe is not exist, just add
 			}
 			else
 			{
@@ -56,7 +56,7 @@ namespace YummyMummy.Models
 					dbEntry.Description = recipe.Description;
 					dbEntry.CookingTime = recipe.CookingTime;
 					dbEntry.Cost = recipe.Cost;
-				}
+				}   //if recipe exist, updated the recipe
 			}
 			context.SaveChanges();
 		}
@@ -75,7 +75,7 @@ namespace YummyMummy.Models
 
 
 
-		public IEnumerable<Ingredient> Ingredients => context.Ingredients;
+		public DbSet<Ingredient> Ingredients => context.Ingredients;
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
 		[DefaultValue("newid()")]
@@ -282,14 +282,12 @@ namespace YummyMummy.Models
 			   .AsNoTracking()
 			   .FirstOrDefault(p => p.ID == ID);
 			return found;
-
 		}
 
 		public RecipeReview SaveRecipeReview(RecipeReview recipeReview)
 		{
 			if (recipeReview.ID == 0)
 			{
-
 				context.RecipeReviews.Add(recipeReview);
 			}
 			else
@@ -308,8 +306,8 @@ namespace YummyMummy.Models
 			}
 			context.SaveChanges();
 			return recipeReview;
-
 		}
+
 		//RecipeReview delete
 		public RecipeReview DeleteRecipeReview(int ID)
 		{
@@ -321,6 +319,58 @@ namespace YummyMummy.Models
 			}
 			return dbEntry;
 		}
+
+		public DbSet<Menu> Menus => context.Menus;
+
+		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+		[DefaultValue("newid()")]
+		public Guid MenuFileToken { get; set; }
+
+		// load Review with related data
+		public Menu GetMenu(int ID)
+		{
+			var found = this.context.Menus
+			   .Include(ri => ri.MenuItems)
+			   .ThenInclude(p=>p.Recipe)
+			   .AsNoTracking()
+			   .FirstOrDefault(p => p.ID == ID);
+			return found;
+		}
+
+		public Menu SaveMenu(Menu menu)
+		{
+			if (menu.ID == 0)
+			{
+				context.Menus.Add(menu);
+			}
+			else
+			{
+				Menu dbEntry = context.Menus
+				.FirstOrDefault(p => p.ID == menu.ID);
+				if (dbEntry != null)
+				{
+					dbEntry.Name = menu.Name;
+					dbEntry.Description = menu.Description;
+				}
+			}
+			context.SaveChanges();
+			return menu;
+		}
+
+		//Menu delete
+		public Menu DeleteMenu(int ID)
+		{
+			Menu dbEntry = this.GetMenu(ID);
+			if (dbEntry != null)
+			{
+				context.MenuItems.RemoveRange(dbEntry.MenuItems);
+				context.Menus.Remove(dbEntry);
+				context.SaveChanges();
+			}
+			return dbEntry;
+		}
+
+
 
 	}
 }

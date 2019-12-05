@@ -52,7 +52,5 @@ namespace YummyMummy.Models
 			this.Telephone = Telephone;
 			this.Message = Message;
 		}
-	}//end of Review Class	
-
-	
+	}//end of Review Class		
 }

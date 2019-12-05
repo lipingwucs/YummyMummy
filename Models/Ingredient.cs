@@ -32,5 +32,4 @@ namespace YummyMummy.Models
 			this.Name = Name;
 		}
 	}//end of Ingredient Class
-
 }

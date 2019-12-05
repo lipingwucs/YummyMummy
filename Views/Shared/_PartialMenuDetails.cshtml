@@ -1,0 +1,36 @@
+﻿@model YummyMummy.Models.Menu
+
+@foreach (var info in typeof(Menu).GetProperties())
+{
+    @if (info.Name == "Description")
+    {
+        <label for="Description" Style="vertical-align: top;">Description:</label>
+        <label for="Description">
+            @Html.Raw(Model.Description.Replace(Environment.NewLine, "<br>"))
+        </label>
+    }
+    else if (info.Name != "MenuItems")
+    {
+        <div class="form-group">
+            <label for="@info.Name"> @info.Name:</label>
+            <label for="@info.Name">@info.GetValue(Model, null)</label>
+        </div>
+    }
+}
+
+<hr />
+<div class="container-fluid">
+    <h4>The recipes of current Menu [@Model.Name]:</h4>
+    <table class="table table-hover">
+        <tr><th>Recipe</th><th>Amount</th><th>Unit</th><th>Action</th></tr>
+        @foreach (var p in Model.MenuItems)
+        {
+            <tr>
+                <td><a asp-action="Details" asp-controller="Recipe" class="btn btn-sm" asp-route-id="@p.RecipeID"> @p.Recipe.Name</a></td>
+                <td>@p.Amount</td>
+            </tr>
+        }
+    </table>
+</div>
+<hr />
+

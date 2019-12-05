@@ -1,0 +1,24 @@
+﻿@model YummyMummy.Models.Menu
+
+@{
+    ViewBag.Title = @ViewBag.MenuName;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.MenuName</title>
+</head>
+<body>
+    <h3>Menu Summary</h3>
+    <hr />
+    @Html.Partial("~/Views/Shared/_PartialMenuDetails.cshtml", Model)
+
+    <div>
+        <a asp-action="List">Back to List</a> &nbsp; | &nbsp;
+        <a asp-action="Index" asp-controller="Home">Back to Home</a>
+    </div>
+</body>
+</html>

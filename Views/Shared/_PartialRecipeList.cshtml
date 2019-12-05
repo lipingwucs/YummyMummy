@@ -1,9 +1,8 @@
 ﻿@model YummyMummy.Models.Recipe
 
 <tr>
-    <td>@Model.ID</td>
-    <td><a asp-controller="Category" asp-action="Details" asp-route-id="@Model.Category.ID">@Model.Category.Name</a></td>
     <td><a asp-action="Details" asp-route-id="@Model.ID">@Model.Name</a></td>
+    <td><a asp-controller="Category" asp-action="Details" asp-route-id="@Model.Category.ID">@Model.Category.Name</a></td>
     <td>@Model.CookingTime</td>
     <td>@Model.Cost.ToString("c")</td>
     <td>@Model.UserName </td>
