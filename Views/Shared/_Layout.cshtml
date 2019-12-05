@@ -48,17 +48,18 @@
                         <li class="nav-item">@Html.ActionLink("Role", "Index", "RoleAdmin")</li>
                     }
                 </ul>
-                
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        @await Component.InvokeAsync("ShoppingCartSummary")
-                        @await Component.InvokeAsync("AccountSummary")
-                    }
-                    else
-                    {
-                        @await Html.PartialAsync("_LoginPartial")
-                    }
-               
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    @await Component.InvokeAsync("AccountSummary")
+                    @await Component.InvokeAsync("ShoppingCartSummary")
+
+                }
+                else
+                {
+                    @await Html.PartialAsync("_LoginPartial")
+                }
+
 
             </div>
             <div> Today is @DateTime.Now.Year @DateTime.Now.Month @DateTime.Now.Day</div>
