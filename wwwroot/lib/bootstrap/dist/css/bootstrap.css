@@ -4279,11 +4279,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   border-width: 1px 0 0;
 }
 .navbar-brand {
-  float: left;
-  height: 50px;
-  padding: 15px 15px;
-  font-size: 18px;
-  line-height: 20px;
+    font-family: comic sans ms;
+    float: left;
+    height: 50px;
+    padding: 10px 10px;
+    font-size: 24px;
+    line-height: 20px;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
