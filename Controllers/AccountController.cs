@@ -67,10 +67,7 @@ namespace YummyMummy.Controllers
 					_logger.LogInformation("User logged in.");
 					return RedirectToLocal(returnUrl);
 				}
-				//if (result.RequiresTwoFactor)
-				//{
-				//    return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-				//}
+				
 				if (result.IsLockedOut)
 				{
 					_logger.LogWarning("User account locked out.");
@@ -240,7 +237,6 @@ namespace YummyMummy.Controllers
 				}
 				AddErrors(result);
 			}
-
 			// If we got this far, something failed, redisplay form
 			return View(model);
 		}
