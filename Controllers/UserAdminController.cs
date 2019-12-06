@@ -95,11 +95,7 @@ namespace YummyMummy.Controllers
 		{
 			ViewData["ReturnUrl"] = returnUrl;
 			if (ModelState.IsValid)
-			{
-				if (model.Email == null)
-				{
-					model.Email = "5140075@qq.com";
-				}
+			{				
 				var user = new AppUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber };
 				var userResult = await _userManager.CreateAsync(user, model.Password);
 				if (userResult.Succeeded)
@@ -159,9 +155,7 @@ namespace YummyMummy.Controllers
 			}
 		}
 
-		// POST: AppUsers/Edit/5
-		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(string id, UserViewModel model, string returnUrl = null, params string[] selectedRoles)

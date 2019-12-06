@@ -11,19 +11,14 @@ namespace YummyMummy.Data
 		public static async Task Initialize(AppIdentityDbContext context, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			context.Database.EnsureCreated();
-
 			if (context.Users.Any())
 			{
 				return;   // DB has been seeded  
 			}
-
 			await CreateDefaultUserAndRole(userManager, roleManager);
-
 			// add any initial data to the application
-
 			context.SaveChanges();
 		}
-
 		private static async Task CreateDefaultUserAndRole(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			string roleAdmin = "Admin";
